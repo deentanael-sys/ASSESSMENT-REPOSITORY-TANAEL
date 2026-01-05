@@ -45,7 +45,7 @@ dictionary = {
     "age": age
 }
 
-#printing the values just to check
+#printing the values just to check :P
 print(dictionary["name"] + "\n" + dictionary["hometown"] + "\n" + str(dictionary["age"]))
 
 # End of activity
