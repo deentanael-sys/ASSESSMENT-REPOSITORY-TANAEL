@@ -11,9 +11,9 @@ import time
 #add menu at start with options to vend item, restock items, exit program ()
 # then you can insert money
 
-items = {
+items = { #Lisitng of items in the vending machine with their stock levels
         'A1': {'name': "Fred's Eyeball", 'price': 5.50, 'stock': 2},
-        'A2': {'name': "Quandale's Dingle", 'price': 10.00, 'stock': 1},
+        'A2': {'name': "Quandale's Dingle??", 'price': 10.00, 'stock': 1},
         'A3': {'name': "Legendary Hero", 'price': 2.75, 'stock': 8},
         'A4': {'name': "Diamond Pickaxe", 'price': 7.00, 'stock': 3},
         'B1': {'name': "Zenyatta's Orb", 'price': 1.50, 'stock': 10},
@@ -25,16 +25,24 @@ items = {
         'C3': {'name': "A Frying Pan", 'price': 3.50, 'stock': 1},
         'C4': {'name': "Holy Hand Grenades", 'price': 4.00, 'stock': 5},
     }
-total_price = 0.0
 
-def transaction(x=float(input('How much do you have?'))):
-    change = x-total_price 
-    if change >= 0:
-        print(f"items dispensed, your change is {change}")
-    else:
-        print('you dont have enough money, items returned')
+usermoney = 0.0  #variable to store user money input
+total_price = 0.0 #total price variable to keep track of the total cost of items selected
+cartfinal = []  #list to keep track of items in the cart
 
-def restock():
+def transaction():  #function to handle the transaction and change return
+    global usermoney
+    usermoney = float(input('How much do you have? '))
+    while usermoney < total_price:
+        usermoney = usermoney + float(input(f'You don\'t have enough money *${usermoney:.2f}*. Please add more funds.\n Add here: '))
+    time.sleep(1)
+    print(f'successfully paid ${usermoney:.2f}')
+    change = usermoney - total_price
+    time.sleep(1)
+    print(f'Transaction complete! Your change is ${change:.2f}. Thank you for using the Vending Machine!')
+
+def restock(): #Restock function to reset stock levels 
+    global items
     items = {
         'A1': {'name': "Fred's Eyeball", 'price': 5.50, 'stock': 2},
         'A2': {'name': "Quandale's Dingle", 'price': 10.00, 'stock': 1},
@@ -51,108 +59,44 @@ def restock():
     }    
     return items
 
+def redo(): #the function that asks if user wants to purchase another item
+    another = input("Do you want to purchase another item? (yes/no): ").lower() 
+    time.sleep(1)  # ^^^ asks if user wants to purchase another item ^^^
+
+    if another == 'yes' or another == 'y':
+        return vend_item() #repeats
+    elif another == 'no' or another == 'n':
+        print(f'Items in cart: {cartfinal}')
+        print("Proceeding to transaction...")
+        transaction() #displays itmes and ends transaction
+    else:
+        print("Please enter yes or no.")
+        return redo()  #if input is invalid it asks again
+
 def vend_item():
     global total_price
     print ("Available items:")
     time.sleep(1)
     for name, item in items.items():
         print(f"{name}: {item['name']} - ${item['price']} (Stock: {item['stock']})")
-    
     print("\n")
-    cart = input("Enter the product code of the item you want to purchase: \nType 'exit' to exit'").upper()
+    cart = input("Enter the product code of the item you want to purchase:").upper()
 
-    if cart == 'A1' in items:
-        items['A1'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'A2' in items:
-        items['A2'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()  
-    
-    elif cart == 'A3' in items:
-        items['A3'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'A4' in items:
-        items['A4'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    
-    elif cart == 'B1' in items:
-        items['B1'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item(), total_price
-    
-    elif cart == 'B2' in items:
-        items['B2'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'B3' in items:
-        items['B3'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'B4' in items:
-        items['B4'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'C1' in items:
-        items['C1'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'C2' in items:
-        items['C2'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'C3' in items:
-        items['C3'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'C4' in items:
-        items['C4'] ['stock'] -=1
-        total_price += items[cart]['price']
-        time.sleep(1)
-        print(f"You selected {items[cart]['name']} for ${total_price:.2f}.")
-        return vend_item()
-    
-    elif cart == 'EXIT':
-        time.sleep(1)
-        print(f"Transaction ended. Your total balance is ${total_price:.2f}")
-        time.sleep(.5)
-        print(f"Checking...")
-        time.sleep(1.5)
-        transaction()
+    if cart in items:
+        if items[cart]['stock'] > 0: #checks for stock if stock > 0 THEN executes block of code
+            cartfinal.append(items[cart]['name']) #adds item to cart
+            total_price += items[cart]['price'] #increments total price
+            items[cart]['stock'] -= 1 #removes one from stock
+            time.sleep(1)
+            print(f"{items[cart]['name']} added to cart. Total price: ${total_price:.2f}")  #displays total price
+            time.sleep(1)
+            print(f'Items in cart: {cartfinal}') #displays items in cart
+            redo() #the redo function called to ask if user wants to purchase another item
+            
+        else:
+            print(f"Sorry, {items[cart]['name']} is out of stock. Please choose another item.") #if stock is 0 it notifies user
+            time.sleep(1)
+            return vend_item()
     
     elif cart == 'RESTOCK':
         time.sleep(1)
